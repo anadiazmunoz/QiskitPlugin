@@ -37,16 +37,16 @@ public class QuantumCyclomaticComplexity implements Sensor {
 
   public int calculate(InputFile f, SensorContext context) throws IOException {
     int totalQCC = 0;
-    String minusF = f.file().toPath().getFileName().toString().toLowerCase();
-    if (f.isFile() && (minusF.contains("qiskit") || minusF.contains("quirk"))) {
+        if (QuantumCircuitDetector.isQuantumSource(f)) {
 
       try {
         String content = f.contents();
         String[] lines_convacios = content.split("\\R");
         ArrayList<String> lines = new ArrayList();
         for(int i=0; i<lines_convacios.length; i++){
-          if(lines_convacios[i] != ""){
-            lines.add(lines_convacios[i]);
+          String line = lines_convacios[i].split("#", 2)[0].trim();
+          if (!line.isEmpty()) {
+            lines.add(line);
           }
         }
         int[] controls = new int [lines.size()];

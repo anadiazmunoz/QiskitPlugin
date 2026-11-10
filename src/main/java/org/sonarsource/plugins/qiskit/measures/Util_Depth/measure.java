@@ -14,8 +14,16 @@ public class measure {
         if(part0.contains("[")) {
             parts = part0.split("\\]");
             parts2 = parts[0].split("\\[");
-            qubits = Integer.valueOf(parts2[1]);
-            depths[qubits] = depths[qubits] + 1;
+            String[] measuredQubits = parts2[1].split(",");
+            for (String measuredQubit : measuredQubits) {
+                qubits = Integer.parseInt(measuredQubit.trim());
+                if (qubits < 0 || qubits >= depths.length) {
+                    throw new IllegalArgumentException(
+                        "Invalid measured qubit index: " + qubits
+                    );
+                }
+                depths[qubits] = depths[qubits] + 1;
+            }
                                       
         }
         else {

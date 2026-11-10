@@ -22,6 +22,9 @@ public class Width implements Sensor {
         // only "main" files, but not "tests"
         Iterable<InputFile> files = fs.inputFiles(fs.predicates().hasType(InputFile.Type.MAIN));
         for (InputFile file : files) {
+            if (!QuantumCircuitDetector.isQuantumSource(file)) {
+                continue;
+            }
             try {
                 context.<Integer>newMeasure()
                     .forMetric(WIDTH)
@@ -38,8 +41,7 @@ public class Width implements Sensor {
         int totalqubits = 0, intqubits = 0;
         String[] parts, parts2;
         String qubits, part1, build_qubits;
-        String minusF = f.file().toPath().getFileName().toString().toLowerCase();
-        if (f.isFile() && (minusF.contains("qiskit") || minusF.contains("quirk"))) {
+                if (QuantumCircuitDetector.isQuantumSource(f)) {
             try {
                 String content = f.contents();
                 String[] lines = content.split("\\R");
@@ -78,6 +80,18 @@ public class Width implements Sensor {
                                 intqubits = Integer.valueOf(qubits);
                                 totalqubits = totalqubits + intqubits;
                             }
+                        }
+                    }
+                    else if (line.contains("QuantumCircuit(")
+                            && !line.contains("QuantumRegister(")
+                            && totalqubits == 0) {
+                        java.util.regex.Matcher matcher =
+                            java.util.regex.Pattern.compile(
+                                "QuantumCircuit\\s*\\(\\s*(\\d+)\\s*(?:,|\\))"
+                            ).matcher(line);
+
+                        if (matcher.find()) {
+                            totalqubits = Integer.parseInt(matcher.group(1));
                         }
                     }
                 }

@@ -22,6 +22,9 @@ public class InitResetOperations implements Sensor {
         // only "main" files, but not "tests"
         Iterable<InputFile> files = fs.inputFiles(fs.predicates().hasType(InputFile.Type.MAIN));
         for (InputFile file : files) {
+            if (!QuantumCircuitDetector.isQuantumSource(file)) {
+                continue;
+            }
             try {
                 context.<Integer>newMeasure()
                     .forMetric(INITRESET)
@@ -36,8 +39,7 @@ public class InitResetOperations implements Sensor {
 
     public static int calculate(InputFile f, SensorContext context) throws IOException {
         int totalInitReset = 0;
-        String minusF = f.file().toPath().getFileName().toString().toLowerCase();
-        if (f.isFile() && (minusF.contains("qiskit") || minusF.contains("quirk"))) {
+                if (QuantumCircuitDetector.isQuantumSource(f)) {
         	try {
             		String content = f.contents();
             		String[] lines = content.split("\\R");

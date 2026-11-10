@@ -37,6 +37,9 @@ public class Depth implements Sensor {
         FileSystem fs = context.fileSystem();
         Iterable<InputFile> files = fs.inputFiles(fs.predicates().hasType(InputFile.Type.MAIN));
         for (InputFile file : files) {
+            if (!QuantumCircuitDetector.isQuantumSource(file)) {
+                continue;
+            }
             try {
                 context.<Integer>newMeasure()
                     .forMetric(DEPTH)
@@ -65,8 +68,7 @@ public class Depth implements Sensor {
     public int[] contar(int[] depths, int ancilla, InputFile f, SensorContext context) {
         String linea, linea1;
         String[] parts;
-        String minusF = f.file().toPath().getFileName().toString().toLowerCase();
-        if (f.isFile() && (minusF.contains("qiskit") || minusF.contains("quirk"))) {
+                if (QuantumCircuitDetector.isQuantumSource(f)) {
             try {
                 String content = f.contents();
                 String[] lines = content.split("\\R");

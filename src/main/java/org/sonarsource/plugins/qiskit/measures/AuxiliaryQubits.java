@@ -22,6 +22,9 @@ public class AuxiliaryQubits implements Sensor {
         // only "main" files, but not "tests"
         Iterable<InputFile> files = fs.inputFiles(fs.predicates().hasType(InputFile.Type.MAIN));
         for (InputFile file : files) {
+            if (!QuantumCircuitDetector.isQuantumSource(file)) {
+                continue;
+            }
             try {
                 context.<Integer>newMeasure()
                     .forMetric(AUXQUBITS)
@@ -38,8 +41,7 @@ public class AuxiliaryQubits implements Sensor {
         int totalAUX = 0, intcubits = 0;
         String[] parts, parts2;
         String cubits, part1, build_cubits;
-        String minusF = f.file().toPath().getFileName().toString().toLowerCase();
-        if (f.isFile() && (minusF.contains("qiskit") || minusF.contains("quirk"))) {
+                if (QuantumCircuitDetector.isQuantumSource(f)) {
             try {
                 String content = f.contents();
                 String[] lines = content.split("\\R");

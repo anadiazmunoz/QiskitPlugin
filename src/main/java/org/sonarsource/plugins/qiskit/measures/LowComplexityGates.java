@@ -36,8 +36,7 @@ public class LowComplexityGates implements Sensor {
 
   public int calculate(InputFile f, SensorContext context) throws IOException {
     int totalLCG = 0;
-    String minusF = f.file().toPath().getFileName().toString().toLowerCase();
-    if (f.isFile() && (minusF.contains("qiskit") || minusF.contains("quirk"))) {
+        if (QuantumCircuitDetector.isQuantumSource(f)) {
 
       try {
         String content = f.contents();

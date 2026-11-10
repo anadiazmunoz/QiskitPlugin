@@ -3,21 +3,20 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.sonarsource.plugins.qiskit</groupId>
-  <artifactId>AQCLab-AnaDiazMunoz-sonar-qiskit-plugin</artifactId>
+  <artifactId>ana-diaz-munoz-sonar-qiskit-plugin</artifactId>
   <packaging>sonar-plugin</packaging>
   <version>1.0.0</version>
 
-  <name>Qiskit Plugin for SonarQube +9.x</name>
-  <description>Qiskit Plugin for SonarQube: Python + Qiskit Language</description>
+  <name>SonarQiskit</name>
+  <description>Quantum Software Quality Analysis Plugin for SonarQube</description>
 
   <organization>
-    <name>AQCLab - Ana Díaz Muñoz</name>
-    <url>http://www.aqclab.es</url>
+    <name>Ana Díaz-Muñoz</name>
   </organization>
   
   <developers>
   	<developer>
-  		<name>Ana Díaz Muñoz</name>
+  		<name>Ana Díaz-Muñoz</name>
       <url>https://www.linkedin.com/in/aniitadiazm/</url>
   	</developer>
   </developers>
@@ -105,7 +104,7 @@
               <goal>install-node-and-yarn</goal>
             </goals>
             <configuration>
-              <nodeVersion>v16.14.0</nodeVersion>
+              <nodeVersion>v22.16.0</nodeVersion>
               <yarnVersion>v1.22.5</yarnVersion>
             </configuration>
           </execution>
